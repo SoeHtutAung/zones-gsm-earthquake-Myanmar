@@ -1,2 +1,2 @@
-# gsm-earthquake-Myanmar
-Repository for scripts regarding technical support to field survey of Geographical Society of Myanmar (GSM)
+# Technical support to Geographical Society of Myanmar (GSM)
+Repository for scripts regarding technical support to field survey of 

@@ -14,12 +14,10 @@ library(geosphere) # to compare coordinates between different GPS coordinates
 library(mapview)
 
 # get datasets
-# townships boundaries from MIMU v9.4
 # EOS-RS Damage Proxy Map: Myanmar, Earthquakes, 5 Apr 2025, v0.9 from EOS-RS https://eos-rs-products.earthobservatory.sg/EOS-RS_202503_Myanmar_Earthquakes/
 # drone photos from TSBM
 
 # load datasets
-township <- st_read("data/township_raw.geojson")
 rupture <- st_read("data/rupture.json")
 dpm <- rast("data/EOS-RS_20250405_DPM_S1_Myanmar_Earthquakes_v0.9.tif") 
 dpm <- dpm$`EOS-RS_20250405_DPM_S1_Myanmar_Earthquakes_v0.9_4` # use the latest release
@@ -43,8 +41,8 @@ dpm_sensitive <- dpm > cutoff_sensitive
 # terra::writeRaster(dpm_mid, "outputs/dpm_mid.tif", overwrite=TRUE)
 # terra::writeRaster(dpm_sensitive, "outputs/dpm_sensitive.tif", overwrite=TRUE)
 
-# 1.3 create 5sqkm areas
-# # count the number of pixels in each 5x5km window an aggregate 
+# 1.3 create 25sqkm areas
+# # count the number of pixels in each 5x5km window and aggregate 
 # factor 167 - (1sqKM - 33x33 pixels as resolution is approx 30m)
 hs_strict <- aggregate(dpm_strict, fact=167, fun=sum, na.rm=TRUE)
 hs_mid <- aggregate(dpm_mid, fact=167, fun=sum, na.rm=TRUE)
@@ -66,14 +64,10 @@ hs_sensitive[hs_sensitive == 0] <- NA
 hs_strict[hs_strict < mean(values(hs_strict),na.rm=T)] <- NA
 hs_mid[hs_mid < mean(values(hs_mid),na.rm=T)] <- NA
 hs_sensitive[hs_sensitive < mean(values(hs_sensitive),na.rm=T)] <- NA
-# # check the results
-# global(hs_strict, "notNA", na.rm=TRUE) # 246 hotspots
-# global(hs_mid, "notNA", na.rm=TRUE) # 273 hotspots
-# global(hs_sensitive, "notNA", na.rm=TRUE) # 320 hotspots
 
 # 1.5 save as polygons
 # # convert to polygons
-zones <- as.polygons(hs_strict, dissolve=TRUE, values=TRUE)
+zones <- as.polygons(hs_strict, dissolve=FALSE, values=TRUE) # focus only severly damaged buidlings
 zones$ID <- sprintf("gsm%02d", 1:nrow(zones)) # create ID 
 names(zones)[names(zones) == "EOS-RS_20250405_DPM_S1_Myanmar_Earthquakes_v0.9_4"] <- "values" # rename
 # # save as kml
@@ -84,10 +78,10 @@ mapview(zones, zcol = "values", layer.name = "Count of pixels <br/> with maximum
   mapview(st_zm(rupture, drop = TRUE, what = "ZM"),color="red", col.regions ="red")
 
 ### 2. Analyze coordinates from drone shots ###
-# 2.1 set up ExifTool
+# 2.1 set up ExifTool (as needed)
 # # Step 1: download standalone ExifTool from https://exiftool.org/ - v13.27 in this analysis
 # # Step 2: locate the exiftool.exe file and set the path
-options(exifr.exiftoolpath = "C:/Users/drsoe/OneDrive/Documents/SHA documents/Earthquake/data/exiftool-13.27_64/exiftool.exe")
+# options(exifr.exiftoolpath = "data/exiftool-13.27_64/exiftool.exe")
 
 # 2.2 Extract EXIF data from photo
 # # set the directory ory to the folder containing the drone photos

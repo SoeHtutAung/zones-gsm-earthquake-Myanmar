@@ -1,4 +1,25 @@
 # Technical support to Geographical Society of Myanmar (GSM)
-As part of the post-disaster response activity by TSBM, its sister organization (GSM) attempted to conduct field observation at most affected areas. I provided technical support to identify priority zones for field observation using damage proxy map from Remote Sensing Lab at Earth Observatory Singapore (EOS-RS).
+As part of the post-disaster response activity by The Spirit of Brotherhood Mission (TSBM), its sister organization (GSM) attempted to conduct field observation at most affected areas. I provided technical support to identify priority zones for field observation using damage proxy map from Remote Sensing Lab at Earth Observatory Singapore (EOS-RS). Secondly, the location of the ground feature is extracted from EXIF data of drone shots, taken by ETK enabled DJI M30T, and calculate the ground seperation to inform accuracy. 
+
+## 1. Data extraction
+Following data are extracted
+| Name | Description |
+| ---- | ---- |
+| EOS-RS_20250405_DPM_S1_Myanmar_Earthquakes_v0.9.tif | Damage Proxy Map: Myanmar, Earthquakes, 5 Apr 2025, v0.9 from [EOS-RS](https://eos-rs-products.earthobservatory.sg/EOS-RS_202503_Myanmar_Earthquakes)|
+| rupture.json | Fault rupture from [USGS](https://earthquake.usgs.gov/earthquakes/eventpage/us7000pn9s/shakemap/metadata)|
+| *.jpg | Photos produced by DJI M30T from [TSBM](https://www.facebook.com/people/TSBM-The-Spirit-of-Brotherhood-Mission/100067464211453) |
+
+## 2. Analysis workflow
+### 2.1 Identifying the priority zones for field observation
+Damage Proxy Map from EOS-RS is used to identify the areas (30m x 30m pixel) with severe damage. Then, those severely damage pixels are counted in each 25sqKm grid, which GSM believed to be a manageably small and efficiently large to conduct field visits. Finally, 25sqKm grids which contain more than average count of severely damage pixels are identified as 'priority zones' for field observation. <br/>
+<img src=https://github.com/user-attachments/assets/e48e34f9-c345-43b7-8d67-9d38daaf91dd title="workflow_priority_zones" width="400"> 
+
+### 2.2 Informing location of damage
+
+
+## 3. Results
+### 3.1 Priority zones
+There are total of 246 priority zones around the fault line, where surface damage are expected to be obvious according to the Damage Proxy Map (v0.9) from EOS-RS. Interactive map can be seen [here!](https://www.google.com/maps/d/u/0/edit?mid=1FUmVraAmTzFeiJu0LVaY_sLRaEWCJwo&ll=20.676505293372237%2C96.4612044193668&&z=9). <br/>
+<img src=https://github.com/user-attachments/assets/c1b0b2f7-9bb1-4865-81bd-6d7979a8ba49 title="priority_zones" width="500"> 
 
 
